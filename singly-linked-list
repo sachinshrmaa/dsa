@@ -1,0 +1,119 @@
+#include<stdio.h>
+#include<conio.h>
+#include<stdlib.h>
+
+void traverse_node(struct node *ptr);
+void search_node(int value);
+void delete_node(int value);
+void insert_node(int value);
+
+struct node{
+    int data;
+    struct node *link;
+};
+
+struct node *head;
+
+void main() {
+    int val, ch;
+    clrscr();
+
+    while(1){
+        printf("\nMENU\n");
+        printf("1. Insert Node\n");
+        printf("2. Travese Node\n");
+        printf("3. Search Node\n");
+        printf("4. Delete Node\n");
+        printf("0. Exit \n");
+
+        printf("Enter Choice:");
+        scanf("%d", &ch);
+
+        switch (ch){
+            case 1: printf("Enter element:");
+                    scanf("%d", &val);
+                    insert_node(val);
+                    break;
+            case 2: traverse_node(head);
+                    break;
+            case 3: printf("search value:");
+                    scanf("%d", &val);
+                    search_node(val);
+                    break;
+            case 4: printf("enter value:");
+                    scanf("%d", &val);
+                    delete_node(val);
+                    break;
+            default: exit(0);
+        }
+        getch();
+    }
+}
+
+void delete_node(int value){
+    struct node *myNode = head, *previous = NULL;
+    int flag =0;
+
+    while(myNode!=NULL){
+        if(myNode->data ==value){
+            if(previous ==NULL){
+                head = myNode->link;
+            }else{
+                previous->link =myNode->link;
+            }
+
+            printf("%d is deleted from list\n",value);
+            flag = 1;
+            free(myNode);
+            break;
+        }
+
+        previous = myNode;
+        myNode = myNode->link;
+    }
+
+    if(flag ==0){
+        printf("key not found!\n");
+    }
+}
+
+void traverse_node(struct node *ptr){
+    printf("The elements are:\n");
+    while(ptr != NULL){
+        printf("%d\n", ptr->data);
+        ptr=ptr->link;
+    }
+}
+
+void search_node(int value){
+    struct node *searchNode = head;
+    int flag =0;
+
+    while(searchNode !=NULL){
+        if(searchNode->data ==value){
+            printf("%d is present at address %d", value, searchNode);
+            flag=1;
+            break;
+        }
+        else{
+            searchNode=searchNode->link;
+        }
+    }
+
+    if(flag==0){
+        printf("node not found");
+    }
+}
+
+void insert_node(int item){
+    struct node *ptr = (struct node *)malloc(sizeof(struct node));
+
+    if(ptr == NULL)
+        printf("Overflow");
+    else{
+        ptr->data = item;
+        ptr->link =head;
+        head =ptr;
+        printf("\n Node Inserted!");
+    }
+}
